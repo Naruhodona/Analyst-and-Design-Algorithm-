@@ -1,0 +1,43 @@
+def min(num1, num2):
+    if num1 < num2:
+        return num1
+    else:
+        return num2
+
+def CoinChange(m, v, s):
+    n = len(v)
+    memo = [m+1] * (m+1)
+    trace = [0] * (m+1)
+    memo[0] = 0
+
+    for j in range(m+1):
+        minn = float("inf")
+        for i in range(n):
+            if j - v[i] >= 0:
+                memo[j] = min(memo[j], 1 + memo[j-v[i]])
+                if memo[j - v[i]] <= minn:
+                    minn = memo[j - v[i]]
+                    trace[j] = i
+    
+    
+    return memo[m], trace
+
+def tracing(trace, m, v):
+    if m == 0:
+        return
+    if m - v[trace[m]] >= 0:
+        res.append(v[trace[m]])
+        m -= v[trace[m]]
+    tracing(trace, m, v)
+
+m = int(input("M = "))
+v = [1, 9, 12, 25, 70]
+
+s = [10, 10, 10, 4, 2]
+result, path = CoinChange(m, v, s)
+
+res = []
+tracing(path, m, v, result)
+
+print(path)
+print(res)
